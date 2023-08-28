@@ -24,19 +24,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composetutorial.ui.theme.ComposeTutorialTheme
+import android.content.res.Configuration
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTutorialTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    MessageCard(Message("Android","Jetpack Compose is a future"))
+                Conversation(SampleData.conversationSample)
+                // Surface(modifier = Modifier.fillMaxSize()) {
+                   // MessageCard(Message("Android","Jetpack Compose is a future"))
                 }
             }
         }
     }
-}
 
 data class Message(val author: String, val body: String)
 
@@ -57,7 +66,10 @@ fun MessageCard(message: Message){
         )
         //Menambahkan space horizontal antara image dan colume
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+
+        var isExpanded by remember{  mutableStateOf(false)  }
+
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
                 text = message.author,
                 // Memberikan warna pada text author menggunakan material 3 (Coloring)
@@ -71,21 +83,44 @@ fun MessageCard(message: Message){
             Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 1.dp) {
                 Text(
                     text = message.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                     //Memberikan gara tulisan pada body ( Typografi )
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
     }
-
 }
 
-@Preview
 @Composable
-fun PreviewMessageCard() {
-    ComposeTutorialTheme {
-        Surface {
-            MessageCard(Message("Android", "Jetpack Compose"))
+fun Conversation(messages: List<Message>) {
+    LazyColumn{
+        items(messages){message ->
+            MessageCard(message)
         }
     }
 }
+@Preview
+@Composable
+fun PreviewConversation(){
+    ComposeTutorialTheme {
+        Conversation(SampleData.conversationSample)
+    }
+}
+
+
+//@Preview(name = "Light Mode")
+//@Preview(
+//    uiMode = Configuration.UI_MODE_NIGHT_YES,
+//    showBackground = true,
+//    name = "Dark Mode"
+//)
+//@Composable
+//fun PreviewMessageCard() {
+//    ComposeTutorialTheme {
+//        Surface {
+//            MessageCard(Message("Android", "Jetpack Compose"))
+//        }
+//    }
+//}
