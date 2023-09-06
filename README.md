@@ -7,4 +7,4 @@
 
 ### Vidio Examaple
 
-[![Video Example](https://i.imgur.com/nrskmtQ.png)](https://i.imgur.com/6RGhvvU.mp4)
+[![Video Example](https://i.imgur.com/JWzxXjh.png)](https://i.imgur.com/6RGhvvU.mp4)
